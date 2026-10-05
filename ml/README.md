@@ -1,0 +1,5 @@
+# FinSight forecasting workspace
+
+`preprocessing.py` aggregates each user's recorded expense transactions by calendar month and creates leakage-conscious lag features. `predict.py` trains an individual linear regression model only after nine months of history, reserves the latest observations for chronological validation, and reports MAE, RMSE, and R² where calculable. It uses Pandas, NumPy, and scikit-learn when available, with a small standard-library regression fallback for restricted environments. The API separately offers a transparent three-month average baseline when the personal model has insufficient history. No future actuals enter the model features.
+
+Generate the fictional 36-month dataset with `python data/generate_synthetic.py`, then run `python train.py data/synthetic_monthly_expenses.csv`. Synthetic values only support demonstration and pipeline development; they are not used as any real user's personal forecast. The fitted coefficients and chronological evaluation report are serialized with Joblib.
