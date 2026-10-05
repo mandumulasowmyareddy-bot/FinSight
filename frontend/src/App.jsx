@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Area, AreaChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { Activity, ArrowDownLeft, ArrowRight, ArrowUpRight, Bell, CalendarDays, ChevronDown, CircleHelp, CreditCard, Download, LayoutDashboard, Lightbulb, LogOut, Menu, Plus, Search, Settings, ShieldCheck, Sparkles, Target, TrendingUp, Wallet, X } from 'lucide-react'
+import { Activity, ArrowDownLeft, ArrowRight, ArrowUpRight, Bell, CalendarDays, Check, ChevronDown, CircleHelp, CreditCard, Download, LayoutDashboard, Lightbulb, LogOut, Menu, Plus, Search, Settings, ShieldCheck, Sparkles, Target, TrendingUp, Wallet, X } from 'lucide-react'
 import api from './services/api'
 import './app.css'
 import './finishing.css'
@@ -16,7 +16,7 @@ const PAYMENTS = ['UPI', 'Debit Card', 'Credit Card', 'Cash', 'Bank Transfer', '
 const COLORS = ['#315f4b', '#c58a52', '#819d83', '#d3b56e', '#7b8595', '#a97a68', '#70a39c', '#9c9966']
 const money = (value) => `₹${Number(value || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}`
 const monthLabel = (value) => new Date(`${value}-02T00:00:00`).toLocaleDateString('en-IN', { month: 'short', year: '2-digit' })
-const errorText = (error) => { const detail = error?.response?.data?.detail; return Array.isArray(detail) ? detail.map(item => item.msg).join(' · ') : detail || 'Something went wrong. Please try again.' }
+const errorText = (error) => { const detail = error?.response?.data?.detail; if (Array.isArray(detail)) return detail.map(item => item.msg).join(' · '); if (detail) return detail; if (error?.code === 'ERR_NETWORK' || error?.message === 'Network Error') return 'Could not reach the FinSight server. Start the backend in a second terminal with: uvicorn app.main:app --reload'; return error?.message || 'Something went wrong. Please try again.' }
 
 function AuthScreen({ onLogin }) {
   const [mode, setMode] = useState('login')
